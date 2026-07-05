@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CitaYa — Barbería El Estilo · Reserva online</title>
+<style>
+  :root{--bg:#080a07;--bg-2:#0f130c;--bg-3:#161b12;--green:#7ec73c;--green-2:#6cae32;--text:#f0f4ec;--muted:#98a48f;--border:#242b1e;--border-lit:#3a4a2a;--yellow:#e6c85a;--font:'Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;max-width:100%}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  .demo-bar{background:var(--green);color:#0a0a0a;text-align:center;font-weight:700;font-size:.84rem;padding:8px 16px}
+  .demo-bar a{text-decoration:underline;font-weight:800}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 clamp(18px,4vw,30px)}
+  /* header */
+  header{position:sticky;top:0;z-index:50;background:rgba(8,10,7,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .brand{font-weight:800;font-size:1.25rem}.brand .g{color:var(--green)}
+  .nav-links{display:flex;gap:4px;align-items:center}
+  .nav-links a{color:var(--muted);font-weight:600;font-size:.9rem;padding:8px 14px;border-radius:8px}
+  .nav-links a:hover{color:var(--text);background:var(--bg-3)}
+  .btn{background:var(--green);color:#0a0a0a;border:none;font-family:var(--font);font-weight:700;font-size:.92rem;padding:11px 20px;border-radius:9px;cursor:pointer;display:inline-block}
+  .btn:hover{background:var(--green-2)}
+  .btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border-lit)}
+  .burger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer}
+  .burger span{width:24px;height:2px;background:var(--text)}
+  /* hero */
+  .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:44px;align-items:center;padding:70px 0}
+  .pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border:1px solid var(--border-lit);border-radius:50px;font-size:.8rem;color:var(--green);font-weight:600;margin-bottom:20px}
+  .pill .d{width:7px;height:7px;border-radius:50%;background:var(--green)}
+  .hero h1{font-size:clamp(2.1rem,4.5vw,3.4rem);font-weight:900;line-height:1.08;letter-spacing:-1px}
+  .hero h1 .g{color:var(--green)}
+  .hero p{color:var(--muted);font-size:1.12rem;margin:18px 0 26px;max-width:46ch}
+  .hero-cta{display:flex;gap:12px;flex-wrap:wrap}
+  .hstats{display:flex;gap:30px;margin-top:34px}
+  .hstats .n{font-size:1.7rem;font-weight:900;color:var(--green)}.hstats .l{font-size:.8rem;color:var(--muted)}
+  .hero-card{background:var(--bg-2);border:1px solid var(--border-lit);border-radius:20px;padding:26px;box-shadow:0 30px 60px rgba(0,0,0,.5)}
+  .hero-card .rw{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--border)}
+  .hero-card .rw:last-child{border:none}
+  .hero-card .em{font-size:1.4rem;margin-right:10px}
+  .hero-card .pr{color:var(--green);font-weight:800}
+  /* sections */
+  section{padding:70px 0}
+  .sec-alt{background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+  .head{text-align:center;max-width:640px;margin:0 auto 44px}
+  .tag{color:var(--green);font-weight:700;letter-spacing:2px;text-transform:uppercase;font-size:.76rem}
+  .head h2{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:900;margin:10px 0 8px;letter-spacing:-.5px}
+  .head p{color:var(--muted)}
+  /* servicios */
+  .servs{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .sv{background:var(--bg-2);border:1px solid var(--border);border-radius:16px;padding:26px;transition:.25s}
+  .sec-alt .sv{background:var(--bg-3)}
+  .sv:hover{border-color:var(--green);transform:translateY(-5px)}
+  .sv .em{font-size:2rem}.sv h3{font-size:1.2rem;font-weight:800;margin:14px 0 4px}.sv .du{color:var(--muted);font-size:.85rem}
+  .sv .pr{color:var(--green);font-size:1.5rem;font-weight:900;margin:12px 0}
+  .sv ul{list-style:none;display:flex;flex-direction:column;gap:7px;font-size:.9rem;color:var(--muted)}
+  .sv li::before{content:"✓";color:var(--green);font-weight:900;margin-right:8px}
+  /* reservar */
+  .book{display:grid;grid-template-columns:1fr 1fr;gap:22px;max-width:880px;margin:0 auto}
+  .box{background:var(--bg-2);border:1px solid var(--border);border-radius:18px;padding:26px}
+  .sec-alt .box{background:var(--bg-3)}
+  .box h3{font-size:1.05rem;font-weight:800;margin-bottom:16px}
+  .serv-o{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 15px;border:1px solid var(--border-lit);border-radius:11px;cursor:pointer;margin-bottom:10px;transition:.2s}
+  .serv-o:hover{border-color:var(--green)}.serv-o.on{border-color:var(--green);background:rgba(126,199,60,.08)}
+  .serv-o .t{font-weight:700;font-size:.94rem}.serv-o .d{color:var(--muted);font-size:.8rem}.serv-o .p{color:var(--green);font-weight:800}
+  .lbl{color:var(--muted);font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin:14px 0 8px;display:block}
+  .days{display:flex;gap:8px;flex-wrap:wrap}
+  .day{flex:1;min-width:56px;text-align:center;background:var(--bg-3);border:1px solid var(--border-lit);border-radius:10px;padding:9px 4px;cursor:pointer;transition:.2s}
+  .sec-alt .day{background:var(--bg-2)}
+  .day.on{background:var(--green);color:#0a0a0a;border-color:var(--green)}.day .dn{font-size:.7rem;color:var(--muted)}.day.on .dn{color:#0a0a0a}.day .dd{font-weight:800;font-size:1.05rem}
+  .slots{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  .slot{background:var(--bg-3);border:1px solid var(--border-lit);border-radius:9px;padding:9px 4px;text-align:center;font-size:.86rem;font-weight:600;cursor:pointer;transition:.2s}
+  .sec-alt .slot{background:var(--bg-2)}
+  .slot:hover{border-color:var(--green)}.slot.on{background:var(--green);color:#0a0a0a;border-color:var(--green)}.slot.off{opacity:.35;cursor:not-allowed;text-decoration:line-through}
+  input{width:100%;background:var(--bg-3);border:1px solid var(--border-lit);border-radius:9px;padding:12px 13px;color:var(--text);font-family:var(--font);font-size:.92rem;margin-bottom:10px}
+  .sec-alt input{background:var(--bg-2)}
+  .confirm{width:100%;background:var(--green);color:#0a0a0a;border:none;font-family:var(--font);font-weight:800;font-size:1rem;padding:14px;border-radius:11px;cursor:pointer;margin-top:6px}.confirm:hover{background:var(--green-2)}
+  /* equipo */
+  .team{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .mb{background:var(--bg-2);border:1px solid var(--border);border-radius:16px;padding:24px;text-align:center}
+  .sec-alt .mb{background:var(--bg-3)}
+  .mb .av{width:76px;height:76px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--green-2));color:#0a0a0a;display:grid;place-items:center;font-weight:900;font-size:1.7rem;margin:0 auto 14px}
+  .mb h4{font-weight:800}.mb .rl{color:var(--green);font-size:.84rem}.mb .st{color:var(--muted);font-size:.82rem;margin-top:6px}
+  /* testimonios */
+  .quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .q{background:var(--bg-2);border:1px solid var(--border);border-radius:16px;padding:24px}
+  .sec-alt .q{background:var(--bg-3)}
+  .q .stars{color:var(--green);margin-bottom:10px}.q p{font-size:.95rem;margin-bottom:14px}
+  .q .who{display:flex;align-items:center;gap:11px}.q .av{width:40px;height:40px;border-radius:50%;background:var(--green);color:#0a0a0a;display:grid;place-items:center;font-weight:800}.q .nm{font-weight:700;font-size:.9rem}.q .rl{color:var(--muted);font-size:.8rem}
+  /* ubicacion */
+  .loc{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center}
+  .loc .map{aspect-ratio:16/11;border-radius:16px;background:linear-gradient(135deg,#1a2414,#0f130c);border:1px solid var(--border-lit);display:grid;place-items:center;position:relative;overflow:hidden}
+  .loc .map .pin{font-size:2.4rem}.loc .map::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 28px,rgba(126,199,60,.05) 28px 29px),repeating-linear-gradient(90deg,transparent 0 28px,rgba(126,199,60,.05) 28px 29px)}
+  .hours{display:flex;flex-direction:column;gap:2px}
+  .hours .h{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--border);font-size:.92rem}
+  .hours .h.now{color:var(--green);font-weight:700}
+  .info-row{display:flex;align-items:center;gap:12px;margin-top:14px;color:var(--muted);font-size:.92rem}
+  .info-row svg{width:18px;height:18px;stroke:var(--green);fill:none;stroke-width:1.8;flex:none}
+  /* footer */
+  footer{border-top:1px solid var(--border);background:var(--bg-2);padding:40px 0}
+  .foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px;color:var(--muted);font-size:.9rem}
+  .foot .brand{font-size:1.1rem;margin-bottom:8px}
+  .fbot{text-align:center;color:var(--muted);font-size:.82rem;margin-top:26px;padding-top:20px;border-top:1px solid var(--border)}
+  @media(max-width:860px){
+    .hero{grid-template-columns:1fr;gap:34px}
+    .servs,.team,.quotes{grid-template-columns:1fr 1fr}
+    .book,.loc{grid-template-columns:1fr}
+    .burger{display:flex}
+    .nav-links{display:none;position:absolute;top:66px;left:0;right:0;flex-direction:column;align-items:stretch;gap:2px;background:var(--bg-2);border-bottom:1px solid var(--border-lit);padding:12px 18px 16px}
+    .nav-links.open{display:flex}
+    .nav-links a{padding:12px 10px;border-radius:9px}
+    .nav-links a.btn{margin:8px 0 0!important;text-align:center}
+  }
+  @media(max-width:560px){.servs,.team,.quotes{grid-template-columns:1fr}.hstats{gap:20px}.hero{padding:44px 0}}
+</style>
+<script>if(window.self!==window.top)document.write('<style>.demo-bar{display:none!important}</style>')</script>
+</head>
+<body>
+  <div class="demo-bar">Plantilla profesional de demostración — PintoCode · <a href="../index.html">Volver al sitio</a></div>
+  <header>
+    <div class="wrap nav">
+      <div class="brand"><span class="g">Cita</span>Ya · Barbería El Estilo</div>
+      <nav class="nav-links" onclick="if(event.target.tagName==='A')this.classList.remove('open')">
+        <a href="#servicios">Servicios</a><a href="#equipo">Equipo</a><a href="#opiniones">Opiniones</a><a href="#ubicacion">Ubicación</a>
+        <a href="#reservar" class="btn" style="margin-left:8px">Reservar</a>
+      </nav>
+      <button class="burger" onclick="document.querySelector('.nav-links').classList.toggle('open')"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero wrap">
+    <div>
+      <div class="pill"><span class="d"></span> Abierto ahora · reserva 24/7</div>
+      <h1>Tu próximo corte, <span class="g">reservado en segundos</span></h1>
+      <p>Elige tu servicio, tu barbero y tu horario. Sin llamadas ni esperas — te llega el recordatorio por WhatsApp.</p>
+      <div class="hero-cta"><a href="#reservar" class="btn">Reservar hora</a><a href="#servicios" class="btn ghost">Ver servicios</a></div>
+      <div class="hstats"><div><div class="n">+2.400</div><div class="l">Cortes al año</div></div><div><div class="n">4.9★</div><div class="l">Calificación</div></div><div><div class="n">6</div><div class="l">Barberos</div></div></div>
+    </div>
+    <div class="hero-card">
+      <div class="rw"><span><span class="em">✂️</span>Corte de cabello</span><span class="pr">$8.000</span></div>
+      <div class="rw"><span><span class="em">🧔</span>Corte + barba</span><span class="pr">$12.000</span></div>
+      <div class="rw"><span><span class="em">🪒</span>Arreglo de barba</span><span class="pr">$6.000</span></div>
+      <div class="rw"><span><span class="em">🧒</span>Corte niño</span><span class="pr">$6.500</span></div>
+      <a href="#reservar" class="btn" style="width:100%;text-align:center;margin-top:16px">Reservar ahora</a>
+    </div>
+  </section>
+
+  <!-- SERVICIOS -->
+  <section id="servicios" class="sec-alt"><div class="wrap">
+    <div class="head"><span class="tag">Servicios</span><h2>Lo que ofrecemos</h2><p>Precios claros, sin sorpresas.</p></div>
+    <div class="servs">
+      <div class="sv"><div class="em">✂️</div><h3>Corte de cabello</h3><div class="du">30 minutos</div><div class="pr">$8.000</div><ul><li>Lavado incluido</li><li>Peinado y styling</li><li>Asesoría de estilo</li></ul></div>
+      <div class="sv"><div class="em">🧔</div><h3>Corte + barba</h3><div class="du">45 minutos</div><div class="pr">$12.000</div><ul><li>Corte completo</li><li>Perfilado de barba</li><li>Toalla caliente</li></ul></div>
+      <div class="sv"><div class="em">🪒</div><h3>Arreglo de barba</h3><div class="du">20 minutos</div><div class="pr">$6.000</div><ul><li>Perfilado y diseño</li><li>Aceite y bálsamo</li><li>Toalla caliente</li></ul></div>
+    </div>
+  </div></section>
+
+  <!-- RESERVAR -->
+  <section id="reservar"><div class="wrap">
+    <div class="head"><span class="tag">Reserva online</span><h2>Agenda tu hora</h2><p>Elige servicio, día y horario. Disponible 24/7.</p></div>
+    <div class="book">
+      <div class="box">
+        <h3>1 · Elige un servicio</h3>
+        <div class="serv-o on" onclick="pick(this)"><div><div class="t">Corte de cabello</div><div class="d">30 min</div></div><div class="p">$8.000</div></div>
+        <div class="serv-o" onclick="pick(this)"><div><div class="t">Corte + barba</div><div class="d">45 min</div></div><div class="p">$12.000</div></div>
+        <div class="serv-o" onclick="pick(this)"><div><div class="t">Arreglo de barba</div><div class="d">20 min</div></div><div class="p">$6.000</div></div>
+        <div class="serv-o" onclick="pick(this)"><div><div class="t">Corte niño</div><div class="d">25 min</div></div><div class="p">$6.500</div></div>
+        <span class="lbl">Barbero</span>
+        <div class="days"><div class="day on" onclick="pickd(this)"><div class="dn">Cualquiera</div><div class="dd">👤</div></div><div class="day" onclick="pickd(this)"><div class="dn">Diego</div><div class="dd">D</div></div><div class="day" onclick="pickd(this)"><div class="dn">Matías</div><div class="dd">M</div></div></div>
+      </div>
+      <div class="box">
+        <h3>2 · Fecha y hora</h3>
+        <span class="lbl">Día</span>
+        <div class="days"><div class="day on" onclick="pickday(this)"><div class="dn">LUN</div><div class="dd">7</div></div><div class="day" onclick="pickday(this)"><div class="dn">MAR</div><div class="dd">8</div></div><div class="day" onclick="pickday(this)"><div class="dn">MIÉ</div><div class="dd">9</div></div><div class="day" onclick="pickday(this)"><div class="dn">JUE</div><div class="dd">10</div></div></div>
+        <span class="lbl">Horario</span>
+        <div class="slots"><div class="slot" onclick="picks(this)">10:00</div><div class="slot off">10:30</div><div class="slot on" onclick="picks(this)">11:00</div><div class="slot" onclick="picks(this)">11:30</div><div class="slot" onclick="picks(this)">12:00</div><div class="slot off">15:00</div><div class="slot" onclick="picks(this)">15:30</div><div class="slot" onclick="picks(this)">16:00</div></div>
+        <span class="lbl">Tus datos</span>
+        <input placeholder="Nombre y apellido"><input placeholder="Teléfono / WhatsApp">
+        <button class="confirm" onclick="alert('¡Reserva confirmada! Te llegará un recordatorio por WhatsApp. (demo)')">Confirmar reserva</button>
+      </div>
+    </div>
+  </div></section>
+
+  <!-- EQUIPO -->
+  <section id="equipo" class="sec-alt"><div class="wrap">
+    <div class="head"><span class="tag">Nuestro equipo</span><h2>Barberos profesionales</h2></div>
+    <div class="team">
+      <div class="mb"><div class="av">D</div><h4>Diego Rojas</h4><div class="rl">Barbero senior</div><div class="st">⭐ 4.9 · 8 años</div></div>
+      <div class="mb"><div class="av">M</div><h4>Matías Vera</h4><div class="rl">Especialista fade</div><div class="st">⭐ 4.8 · 5 años</div></div>
+      <div class="mb"><div class="av">F</div><h4>Felipe Díaz</h4><div class="rl">Diseño de barba</div><div class="st">⭐ 5.0 · 6 años</div></div>
+      <div class="mb"><div class="av">C</div><h4>Cristóbal S.</h4><div class="rl">Barbero</div><div class="st">⭐ 4.7 · 3 años</div></div>
+    </div>
+  </div></section>
+
+  <!-- OPINIONES -->
+  <section id="opiniones"><div class="wrap">
+    <div class="head"><span class="tag">Opiniones</span><h2>Lo que dicen los clientes</h2></div>
+    <div class="quotes">
+      <div class="q"><div class="stars">★★★★★</div><p>"Reservé en 30 segundos y me atendieron puntual. El fade quedó perfecto."</p><div class="who"><div class="av">P</div><div><div class="nm">Pablo G.</div><div class="rl">Cliente frecuente</div></div></div></div>
+      <div class="q"><div class="stars">★★★★★</div><p>"Ya no pierdo tiempo llamando. El recordatorio por WhatsApp es lo mejor."</p><div class="who"><div class="av">S</div><div><div class="nm">Sebastián R.</div><div class="rl">Cliente</div></div></div></div>
+      <div class="q"><div class="stars">★★★★★</div><p>"Atención de primera y muy fácil agendar desde el celular. Recomendado."</p><div class="who"><div class="av">N</div><div><div class="nm">Nicolás M.</div><div class="rl">Cliente</div></div></div></div>
+    </div>
+  </div></section>
+
+  <!-- UBICACION -->
+  <section id="ubicacion" class="sec-alt"><div class="wrap">
+    <div class="head"><span class="tag">Visítanos</span><h2>Ubicación y horarios</h2></div>
+    <div class="loc">
+      <div class="map"><span class="pin">📍</span></div>
+      <div>
+        <div class="hours">
+          <div class="h now"><span>Lunes a Viernes</span><span>10:00 – 20:00</span></div>
+          <div class="h"><span>Sábado</span><span>10:00 – 18:00</span></div>
+          <div class="h"><span>Domingo</span><span>Cerrado</span></div>
+        </div>
+        <div class="info-row"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6-7-11a7 7 0 0114 0c0 5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg> Av. Principal 1234, Ovalle</div>
+        <div class="info-row"><svg viewBox="0 0 24 24"><path d="M21 11.5a8 8 0 01-11.9 7L3 20.5l2.1-6A8 8 0 1121 11.5z"/></svg> +56 9 9334 7289</div>
+        <a href="#reservar" class="btn" style="margin-top:18px">Reservar hora</a>
+      </div>
+    </div>
+  </div></section>
+
+  <footer><div class="wrap">
+    <div class="foot">
+      <div><div class="brand"><span class="g" style="color:var(--green)">Cita</span>Ya · Barbería El Estilo</div>Cortes con estilo, reserva sin complicaciones.</div>
+      <div><b style="color:var(--text)">Contacto</b><br>Av. Principal 1234, Ovalle<br>+56 9 9334 7289</div>
+      <div><b style="color:var(--text)">Horario</b><br>Lun–Vie 10–20 h<br>Sáb 10–18 h</div>
+    </div>
+    <div class="fbot">© 2026 Barbería El Estilo · Plantilla por PintoCode</div>
+  </div></footer>
+<script>
+  function pick(el){el.parentElement.querySelectorAll('.serv-o').forEach(s=>s.classList.remove('on'));el.classList.add('on')}
+  function pickd(el){el.parentElement.querySelectorAll('.day').forEach(s=>s.classList.remove('on'));el.classList.add('on')}
+  function pickday(el){el.parentElement.querySelectorAll('.day').forEach(s=>s.classList.remove('on'));el.classList.add('on')}
+  function picks(el){el.parentElement.querySelectorAll('.slot').forEach(s=>s.classList.remove('on'));el.classList.add('on')}
+</script>
+</body>
+</html>

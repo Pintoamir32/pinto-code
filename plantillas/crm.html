@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ClientHub — CRM de clientes · PintoCode</title>
+<style>
+  :root{--bg:#080a07;--bg-2:#0f130c;--bg-3:#161b12;--green:#7ec73c;--green-2:#6cae32;--text:#f0f4ec;--muted:#98a48f;--border:#242b1e;--border-lit:#3a4a2a;--red:#ff6b6b;--yellow:#e6c85a;--blue:#5fa8ff;--purple:#b06cff;--font:'Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.5;overflow-x:hidden;max-width:100%}
+  a{color:inherit;text-decoration:none}
+  .demo-bar{background:var(--green);color:#0a0a0a;text-align:center;font-weight:700;font-size:.84rem;padding:8px 16px}
+  .demo-bar a{text-decoration:underline;font-weight:800}
+  .shell{display:flex;min-height:calc(100vh - 35px)}
+  .side{width:232px;flex:none;background:var(--bg-2);border-right:1px solid var(--border);padding:20px 14px;display:flex;flex-direction:column;position:sticky;top:0;height:calc(100vh - 35px)}
+  .logo{font-weight:800;font-size:1.25rem;padding:6px 10px 8px;display:flex;align-items:center;gap:9px}
+  .logo .g{color:var(--green)}.logo .dot{width:10px;height:10px;border-radius:3px;background:var(--green)}
+  .nav-lbl{color:var(--muted);font-size:.7rem;text-transform:uppercase;letter-spacing:1px;padding:16px 12px 6px;font-weight:700}
+  .side a.item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:9px;color:var(--muted);font-weight:600;font-size:.9rem;cursor:pointer;transition:.15s}
+  .side a.item.on,.side a.item:hover{background:var(--bg-3);color:var(--text)}.side a.item.on{color:var(--green)}
+  .side a.item svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .side a.item .bdg{margin-left:auto;background:var(--green);color:#0a0a0a;font-size:.68rem;font-weight:800;padding:1px 7px;border-radius:50px}
+  .side .user{margin-top:auto;display:flex;align-items:center;gap:10px;padding:12px;border-top:1px solid var(--border)}
+  .side .user .av{width:34px;height:34px;border-radius:50%;background:var(--green);color:#0a0a0a;display:grid;place-items:center;font-weight:800}
+  .side .user .nm{font-size:.86rem;font-weight:700}.side .user .rl{color:var(--muted);font-size:.75rem}
+  .main{flex:1;min-width:0;display:flex;flex-direction:column}
+  .topbar{display:flex;align-items:center;gap:14px;padding:16px clamp(16px,3vw,30px);border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(8,10,7,.9);backdrop-filter:blur(8px);z-index:10}
+  .topbar .search{flex:1;min-width:0;max-width:400px;background:var(--bg-2);border:1px solid var(--border-lit);border-radius:10px;padding:10px 14px;color:var(--text);font-family:var(--font);font-size:.9rem}
+  .topbar .burger{display:none;width:40px;height:40px;border-radius:10px;border:1px solid var(--border-lit);place-items:center;cursor:pointer}
+  .topbar .burger svg{width:18px;height:18px;stroke:var(--text);fill:none;stroke-width:2}
+  .content{padding:26px clamp(16px,3vw,30px);flex:1}
+  .view{display:none}.view.on{display:block;animation:fade .3s}@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .ph{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:22px}
+  .ph h1{font-size:1.5rem;font-weight:800}.ph p{color:var(--muted);font-size:.9rem}
+  .btn{background:var(--green);color:#0a0a0a;border:none;font-family:var(--font);font-weight:700;font-size:.9rem;padding:11px 18px;border-radius:9px;cursor:pointer}.btn:hover{background:var(--green-2)}
+  .btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border-lit)}
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+  .card{background:var(--bg-2);border:1px solid var(--border);border-radius:14px;padding:20px}
+  .card .ic{width:38px;height:38px;border-radius:10px;background:var(--bg-3);display:grid;place-items:center;margin-bottom:12px}
+  .card .ic svg{width:19px;height:19px;fill:none;stroke:var(--green);stroke-width:1.8}
+  .card .l{color:var(--muted);font-size:.82rem}.card .n{font-size:1.8rem;font-weight:800;margin-top:4px}.card .n.g{color:var(--green)}
+  .card .tr{font-size:.78rem;margin-top:6px;color:var(--green);font-weight:600}.card .tr.d{color:var(--red)}
+  .two{display:grid;grid-template-columns:1.5fr 1fr;gap:18px;margin-bottom:20px}
+  .panel{background:var(--bg-2);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+  .panel-top{padding:15px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+  .panel-top h2{font-size:1rem;font-weight:700}.panel-top .link{color:var(--green);font-size:.84rem;font-weight:700;cursor:pointer}
+  .pad{padding:20px}
+  .chart{display:flex;align-items:flex-end;gap:9px;height:190px;padding-top:10px}
+  .chart .bar{flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;height:100%;justify-content:flex-end}
+  .chart .bar .fill{width:100%;background:linear-gradient(180deg,var(--green),var(--green-2));border-radius:6px 6px 0 0;min-height:5px}
+  .chart .bar .bl{color:var(--muted);font-size:.72rem}
+  table{width:100%;border-collapse:collapse}
+  th,td{text-align:left;padding:13px 20px;font-size:.9rem;border-bottom:1px solid var(--border)}
+  th{color:var(--muted);font-weight:600;font-size:.75rem;text-transform:uppercase;letter-spacing:.5px}
+  tr:last-child td{border-bottom:none}tbody tr{cursor:pointer}tbody tr:hover,tbody tr.on{background:var(--bg-3)}
+  .who{display:flex;align-items:center;gap:11px}
+  .av{width:36px;height:36px;border-radius:50%;background:var(--green);color:#0a0a0a;display:grid;place-items:center;font-weight:800;flex:none}
+  .who .nm{font-weight:700}.who .em{color:var(--muted);font-size:.8rem}
+  .tag{display:inline-block;padding:4px 11px;border-radius:50px;font-size:.74rem;font-weight:700}
+  .tag.vip{background:rgba(230,200,90,.15);color:var(--yellow)}.tag.act{background:rgba(126,199,60,.15);color:var(--green)}.tag.new{background:rgba(95,168,255,.15);color:var(--blue)}.tag.cold{background:rgba(152,164,143,.15);color:var(--muted)}
+  /* client detail split */
+  .split{display:grid;grid-template-columns:1fr 340px;gap:18px}
+  .detail{background:var(--bg-2);border:1px solid var(--border);border-radius:14px;padding:24px;height:fit-content}
+  .detail .bigav{width:64px;height:64px;border-radius:50%;background:var(--green);color:#0a0a0a;display:grid;place-items:center;font-weight:800;font-size:1.6rem;margin-bottom:14px}
+  .detail h3{font-size:1.2rem;font-weight:800}.detail .role{color:var(--muted);font-size:.88rem;margin-bottom:16px}
+  .drow{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--border);font-size:.9rem}.drow span:first-child{color:var(--muted)}.drow:last-child{border:none}
+  .hist{margin-top:16px}.hist .hl{color:var(--muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+  .ev{display:flex;gap:10px;font-size:.86rem;margin-bottom:10px}.ev .dot{width:8px;height:8px;border-radius:50%;background:var(--green);margin-top:6px;flex:none}.ev .d{color:var(--muted);font-size:.78rem}
+  .dbtns{display:flex;gap:8px;margin-top:16px}.dbtns .btn{flex:1;justify-content:center;text-align:center;font-size:.82rem;padding:10px}
+  /* pipeline */
+  .pipe{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .col{background:var(--bg-2);border:1px solid var(--border);border-radius:14px;padding:14px}
+  .col .ct{font-weight:700;font-size:.9rem;display:flex;justify-content:space-between;margin-bottom:12px}.col .ct .c{color:var(--muted)}
+  .lead{background:var(--bg-3);border:1px solid var(--border);border-radius:11px;padding:13px;margin-bottom:10px;cursor:grab}
+  .lead .nm{font-weight:700;font-size:.9rem}.lead .co{color:var(--muted);font-size:.8rem}.lead .vl{color:var(--green);font-weight:800;font-size:.9rem;margin-top:6px}
+  /* tareas */
+  .task{display:flex;align-items:center;gap:13px;padding:14px 0;border-bottom:1px solid var(--border)}.task:last-child{border:none}
+  .chk{width:22px;height:22px;border-radius:7px;border:2px solid var(--border-lit);cursor:pointer;flex:none;display:grid;place-items:center}
+  .chk.done{background:var(--green);border-color:var(--green)}.chk.done::after{content:"✓";color:#0a0a0a;font-weight:900;font-size:.85rem}
+  .task .tt{font-weight:600;font-size:.94rem}.task.done .tt{text-decoration:line-through;color:var(--muted)}
+  .task .meta{color:var(--muted);font-size:.8rem}.task .due{margin-left:auto;font-size:.8rem;font-weight:700}
+  .legend{display:flex;flex-direction:column;gap:13px}.lg{display:flex;align-items:center;gap:10px;font-size:.9rem}.lg .sw{width:12px;height:12px;border-radius:3px;flex:none}.lg .val{margin-left:auto;font-weight:700;color:var(--muted)}
+  @media(max-width:960px){.pipe{grid-template-columns:1fr 1fr}}
+  @media(max-width:900px){.cards{grid-template-columns:1fr 1fr!important}.two,.split{grid-template-columns:1fr}}
+  @media(max-width:760px){.side{position:fixed;left:0;top:35px;z-index:50;transform:translateX(-100%);transition:.3s;box-shadow:0 0 40px rgba(0,0,0,.6)}.side.open{transform:none}.topbar .burger{display:grid}.pipe{grid-template-columns:1fr}}
+  @media(max-width:640px){
+    .panel{overflow-x:auto}
+    .panel table{min-width:520px}
+    .cards{grid-template-columns:1fr!important}
+    .topbar .search{max-width:none}
+    .content{padding:20px 14px}
+    .ph h1{font-size:1.3rem}
+  }
+</style>
+<script>if(window.self!==window.top)document.write('<style>.demo-bar{display:none!important}</style>')</script>
+</head>
+<body>
+  <div class="demo-bar">Plantilla profesional de demostración — PintoCode · <a href="../index.html">Volver al sitio</a></div>
+  <div class="shell">
+    <aside class="side" id="side">
+      <div class="logo"><span class="dot"></span><span><span class="g">Client</span>Hub</span></div>
+      <div class="nav-lbl">Principal</div>
+      <a class="item on" onclick="go('dash',this)"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> Panel</a>
+      <a class="item" onclick="go('clients',this)"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 2.7-5 6-5s6 2 6 5"/><path d="M16 6a3 3 0 010 6"/></svg> Clientes</a>
+      <a class="item" onclick="go('pipe',this)"><svg viewBox="0 0 24 24"><path d="M3 6h18M6 12h12M10 18h4"/></svg> Embudo de ventas</a>
+      <a class="item" onclick="go('tasks',this)"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg> Tareas <span class="bdg">4</span></a>
+      <div class="nav-lbl">Análisis</div>
+      <a class="item" onclick="go('rep',this)"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg> Reportes</a>
+      <div class="user"><div class="av">AP</div><div><div class="nm">Amir Pinto</div><div class="rl">Ventas</div></div></div>
+    </aside>
+
+    <div class="main">
+      <div class="topbar">
+        <div class="burger" onclick="document.getElementById('side').classList.toggle('open')"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></div>
+        <input class="search" placeholder="Buscar cliente, empresa, teléfono…">
+        <button class="btn" onclick="go('clients',document.querySelectorAll('.side .item')[1])">+ Cliente</button>
+      </div>
+      <div class="content">
+
+        <!-- DASHBOARD -->
+        <section class="view on" id="dash">
+          <div class="ph"><div><h1>Panel</h1><p>Resumen de tu cartera · julio 2026</p></div><button class="btn ghost">Exportar</button></div>
+          <div class="cards">
+            <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 2.7-5 6-5s6 2 6 5"/></svg></div><div class="l">Clientes totales</div><div class="n">312</div><div class="tr">▲ 27 este mes</div></div>
+            <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h7l-1 8 9-12h-7l1-8z"/></svg></div><div class="l">Activos este mes</div><div class="n g">184</div><div class="tr">▲ 12%</div></div>
+            <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div><div class="l">Ventas del mes</div><div class="n g">$8.9M</div><div class="tr">▲ 8%</div></div>
+            <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M3 6h18M6 12h12M10 18h4"/></svg></div><div class="l">Oportunidades</div><div class="n">$3.2M</div><div class="tr">18 abiertas</div></div>
+          </div>
+          <div class="two">
+            <div class="panel"><div class="panel-top"><h2>Ingresos — últimos 6 meses</h2><span class="link">Ver reportes</span></div><div class="pad"><div class="chart" id="chart"></div></div></div>
+            <div class="panel"><div class="panel-top"><h2>Clientes por estado</h2></div><div class="pad"><div class="legend">
+              <div class="lg"><span class="sw" style="background:var(--yellow)"></span> VIP <span class="val">14%</span></div>
+              <div class="lg"><span class="sw" style="background:var(--green)"></span> Activos <span class="val">59%</span></div>
+              <div class="lg"><span class="sw" style="background:var(--blue)"></span> Nuevos <span class="val">18%</span></div>
+              <div class="lg"><span class="sw" style="background:var(--muted)"></span> Inactivos <span class="val">9%</span></div>
+            </div></div></div>
+          </div>
+          <div class="panel"><div class="panel-top"><h2>Clientes recientes</h2><span class="link" onclick="go('clients',document.querySelectorAll('.side .item')[1])">Ver todos</span></div>
+            <table><tbody>
+              <tr onclick="go('clients',document.querySelectorAll('.side .item')[1])"><td><div class="who"><div class="av">RM</div><div><div class="nm">Rosa Muñoz</div><div class="em">Tienda de abarrotes</div></div></div></td><td>Hace 2 días</td><td>$1.240.000</td><td><span class="tag vip">VIP</span></td></tr>
+              <tr onclick="go('clients',document.querySelectorAll('.side .item')[1])"><td><div class="who"><div class="av">JC</div><div><div class="nm">Julio Castro</div><div class="em">Barbería</div></div></div></td><td>Hace 5 días</td><td>$680.000</td><td><span class="tag act">Activo</span></td></tr>
+              <tr onclick="go('clients',document.querySelectorAll('.side .item')[1])"><td><div class="who"><div class="av">AP</div><div><div class="nm">Ana Pérez</div><div class="em">Restaurante</div></div></div></td><td>Ayer</td><td>$95.000</td><td><span class="tag new">Nuevo</span></td></tr>
+            </tbody></table>
+          </div>
+        </section>
+
+        <!-- CLIENTES -->
+        <section class="view" id="clients">
+          <div class="ph"><div><h1>Clientes</h1><p>312 clientes · 184 activos</p></div><button class="btn">+ Nuevo cliente</button></div>
+          <div class="split">
+            <div class="panel">
+              <div class="panel-top"><h2>Cartera</h2><input class="search" style="max-width:220px" placeholder="Buscar…" oninput="filt(this.value)"></div>
+              <table><thead><tr><th>Cliente</th><th>Última compra</th><th>Total</th><th>Estado</th></tr></thead><tbody id="rows">
+                <tr class="on" onclick="sel(this)"><td><div class="who"><div class="av">RM</div><div><div class="nm">Rosa Muñoz</div><div class="em">rosa@correo.cl</div></div></div></td><td>Hace 2 días</td><td>$1.240.000</td><td><span class="tag vip">VIP</span></td></tr>
+                <tr onclick="sel(this)"><td><div class="who"><div class="av">JC</div><div><div class="nm">Julio Castro</div><div class="em">julio@correo.cl</div></div></div></td><td>Hace 5 días</td><td>$680.000</td><td><span class="tag act">Activo</span></td></tr>
+                <tr onclick="sel(this)"><td><div class="who"><div class="av">AP</div><div><div class="nm">Ana Pérez</div><div class="em">ana@correo.cl</div></div></div></td><td>Ayer</td><td>$95.000</td><td><span class="tag new">Nuevo</span></td></tr>
+                <tr onclick="sel(this)"><td><div class="who"><div class="av">LF</div><div><div class="nm">Luis Fuentes</div><div class="em">luis@correo.cl</div></div></div></td><td>1 semana</td><td>$430.000</td><td><span class="tag act">Activo</span></td></tr>
+                <tr onclick="sel(this)"><td><div class="who"><div class="av">CS</div><div><div class="nm">Carla Soto</div><div class="em">carla@correo.cl</div></div></div></td><td>Hace 3 días</td><td>$2.100.000</td><td><span class="tag vip">VIP</span></td></tr>
+                <tr onclick="sel(this)"><td><div class="who"><div class="av">PG</div><div><div class="nm">Pablo Gómez</div><div class="em">pablo@correo.cl</div></div></div></td><td>1 mes</td><td>$210.000</td><td><span class="tag cold">Inactivo</span></td></tr>
+              </tbody></table>
+            </div>
+            <div class="detail">
+              <div class="bigav" id="dav">RM</div>
+              <h3 id="dnm">Rosa Muñoz</h3>
+              <div class="role" id="drl">Cliente desde 2023 · Tienda de abarrotes</div>
+              <div class="drow"><span>Teléfono</span><span>+56 9 1234 5678</span></div>
+              <div class="drow"><span>Compras totales</span><span>$1.240.000</span></div>
+              <div class="drow"><span>Pedidos</span><span>38</span></div>
+              <div class="drow"><span>Ticket promedio</span><span>$32.600</span></div>
+              <div class="dbtns"><button class="btn">Contactar</button><button class="btn ghost">Nueva venta</button></div>
+              <div class="hist">
+                <div class="hl">Actividad reciente</div>
+                <div class="ev"><div class="dot"></div><div>Compra de $48.000<div class="d">Hace 2 días</div></div></div>
+                <div class="ev"><div class="dot"></div><div>Contacto por WhatsApp<div class="d">Hace 4 días</div></div></div>
+                <div class="ev"><div class="dot"></div><div>Compra de $31.500<div class="d">Hace 1 semana</div></div></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- EMBUDO -->
+        <section class="view" id="pipe">
+          <div class="ph"><div><h1>Embudo de ventas</h1><p>18 oportunidades · $3.2M en juego</p></div><button class="btn">+ Oportunidad</button></div>
+          <div class="pipe">
+            <div class="col"><div class="ct"><span>🔵 Prospecto</span><span class="c">5</span></div>
+              <div class="lead"><div class="nm">Panadería Don Pan</div><div class="co">Sistema POS</div><div class="vl">$450.000</div></div>
+              <div class="lead"><div class="nm">Ferretería El Clavo</div><div class="co">Inventario</div><div class="vl">$680.000</div></div>
+            </div>
+            <div class="col"><div class="ct"><span>🟡 Contactado</span><span class="c">4</span></div>
+              <div class="lead"><div class="nm">Café Central</div><div class="co">Menú digital</div><div class="vl">$320.000</div></div>
+              <div class="lead"><div class="nm">Clínica Dental Sur</div><div class="co">Citas</div><div class="vl">$540.000</div></div>
+            </div>
+            <div class="col"><div class="ct"><span>🟠 Propuesta</span><span class="c">6</span></div>
+              <div class="lead"><div class="nm">Minimarket 24h</div><div class="co">Inventario + POS</div><div class="vl">$890.000</div></div>
+            </div>
+            <div class="col"><div class="ct"><span>🟢 Cerrado</span><span class="c">3</span></div>
+              <div class="lead"><div class="nm">Barbería El Estilo</div><div class="co">Citas online</div><div class="vl">$420.000</div></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAREAS -->
+        <section class="view" id="tasks">
+          <div class="ph"><div><h1>Tareas</h1><p>4 pendientes hoy</p></div><button class="btn">+ Tarea</button></div>
+          <div class="panel"><div class="pad">
+            <div class="task"><div class="chk" onclick="tg(this)"></div><div><div class="tt">Llamar a Rosa Muñoz por reposición</div><div class="meta">Cliente VIP</div></div><span class="due" style="color:var(--red)">Hoy</span></div>
+            <div class="task"><div class="chk" onclick="tg(this)"></div><div><div class="tt">Enviar propuesta a Minimarket 24h</div><div class="meta">Oportunidad $890.000</div></div><span class="due" style="color:var(--yellow)">Mañana</span></div>
+            <div class="task"><div class="chk" onclick="tg(this)"></div><div><div class="tt">Seguimiento Café Central</div><div class="meta">Menú digital</div></div><span class="due" style="color:var(--muted)">Jue</span></div>
+            <div class="task done"><div class="chk done" onclick="tg(this)"></div><div><div class="tt">Cerrar venta Barbería El Estilo</div><div class="meta">Completado</div></div><span class="due" style="color:var(--green)">✓</span></div>
+          </div></div>
+        </section>
+
+        <!-- REPORTES -->
+        <section class="view" id="rep">
+          <div class="ph"><div><h1>Reportes</h1><p>Rendimiento de ventas</p></div><button class="btn ghost">Descargar PDF</button></div>
+          <div class="cards"><div class="card"><div class="l">Tasa de conversión</div><div class="n g">38%</div></div><div class="card"><div class="l">Valor promedio</div><div class="n">$178.000</div></div><div class="card"><div class="l">Ciclo de venta</div><div class="n">12 días</div></div><div class="card"><div class="l">Clientes retenidos</div><div class="n g">86%</div></div></div>
+          <div class="two">
+            <div class="panel"><div class="panel-top"><h2>Ventas por mes</h2></div><div class="pad"><div class="chart" id="chart2"></div></div></div>
+            <div class="panel"><div class="panel-top"><h2>Top clientes</h2></div><div class="pad"><div class="legend">
+              <div class="lg"><div class="av" style="width:28px;height:28px;font-size:.8rem">CS</div> Carla Soto <span class="val">$2.1M</span></div>
+              <div class="lg"><div class="av" style="width:28px;height:28px;font-size:.8rem">RM</div> Rosa Muñoz <span class="val">$1.24M</span></div>
+              <div class="lg"><div class="av" style="width:28px;height:28px;font-size:.8rem">JC</div> Julio Castro <span class="val">$680K</span></div>
+            </div></div></div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+<script>
+  const data={RM:['Rosa Muñoz','Cliente desde 2023 · Tienda de abarrotes'],JC:['Julio Castro','Cliente desde 2024 · Barbería'],AP:['Ana Pérez','Cliente nuevo · Restaurante'],LF:['Luis Fuentes','Cliente desde 2024 · Ferretería'],CS:['Carla Soto','Cliente desde 2022 · Distribuidora'],PG:['Pablo Gómez','Cliente desde 2023 · Kiosco']};
+  function go(id,el){document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelectorAll('.side .item').forEach(a=>a.classList.remove('on'));if(el)el.classList.add('on');document.getElementById('side').classList.remove('open');window.scrollTo(0,0)}
+  function filt(q){q=q.toLowerCase();document.querySelectorAll('#rows tr').forEach(r=>{r.style.display=r.querySelector('.nm').textContent.toLowerCase().includes(q)?'':'none'})}
+  function sel(r){document.querySelectorAll('#rows tr').forEach(x=>x.classList.remove('on'));r.classList.add('on');const av=r.querySelector('.av').textContent;document.getElementById('dav').textContent=av;document.getElementById('dnm').textContent=data[av][0];document.getElementById('drl').textContent=data[av][1]}
+  function tg(el){el.classList.toggle('done');el.closest('.task').classList.toggle('done')}
+  const cd=[55,68,60,80,72,95],cd2=[40,55,65,70,60,85,78,90,82,95,88,100];
+  function chart(id,d,labels){const c=document.getElementById(id);const mx=Math.max(...d);c.innerHTML=d.map((v,i)=>`<div class="bar"><div class="fill" style="height:${v/mx*100}%"></div><div class="bl">${labels[i]||''}</div></div>`).join('')}
+  chart('chart',cd,['Feb','Mar','Abr','May','Jun','Jul']);chart('chart2',cd2,['E','F','M','A','M','J','J','A','S','O','N','D']);
+</script>
+</body>
+</html>

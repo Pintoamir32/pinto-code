@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SaborExpress — Menú y delivery online</title>
+<style>
+  :root{--bg:#080a07;--bg-2:#0f130c;--bg-3:#161b12;--green:#7ec73c;--green-2:#6cae32;--orange:#ff8a3c;--text:#f0f4ec;--muted:#98a48f;--border:#242b1e;--border-lit:#3a4a2a;--yellow:#e6c85a;--font:'Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;max-width:100%}
+  a{color:inherit;text-decoration:none}
+  .demo-bar{background:var(--green);color:#0a0a0a;text-align:center;font-weight:700;font-size:.84rem;padding:8px 16px}
+  .demo-bar a{text-decoration:underline;font-weight:800}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 clamp(16px,4vw,26px)}
+  header{position:sticky;top:0;z-index:50;background:rgba(8,10,7,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{font-weight:900;font-size:1.3rem}
+  .nav-links{display:flex;gap:4px;align-items:center}
+  .nav-links a{color:var(--muted);font-weight:600;font-size:.9rem;padding:8px 13px;border-radius:8px}
+  .nav-links a:hover{color:var(--text);background:var(--bg-3)}
+  .btn{background:var(--green);color:#0a0a0a;border:none;font-family:var(--font);font-weight:700;font-size:.92rem;padding:11px 20px;border-radius:9px;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+  .btn:hover{background:var(--green-2)}
+  .btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2}
+  .burger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer}
+  .burger span{width:24px;height:2px;background:var(--text)}
+  /* hero */
+  .hero{position:relative;text-align:center;padding:80px 20px;overflow:hidden;background:radial-gradient(circle at 50% 0%,rgba(255,138,60,.18),transparent 60%)}
+  .hero .badge{display:inline-flex;align-items:center;gap:8px;background:var(--bg-2);border:1px solid var(--border-lit);border-radius:50px;padding:6px 15px;font-size:.82rem;color:var(--orange);font-weight:700;margin-bottom:20px}
+  .hero h1{font-size:clamp(2.2rem,5.5vw,3.8rem);font-weight:900;line-height:1.05;letter-spacing:-1.5px}
+  .hero h1 .o{color:var(--orange)}
+  .hero p{color:var(--muted);font-size:1.15rem;max-width:50ch;margin:18px auto 28px}
+  .hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .hero .feats{display:flex;gap:26px;justify-content:center;flex-wrap:wrap;margin-top:34px;color:var(--muted);font-size:.9rem}
+  .hero .feats b{color:var(--text)}
+  /* promos */
+  .promos{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:-30px;position:relative;z-index:2}
+  .promo{border-radius:16px;padding:22px;color:#0a0a0a;font-weight:700}
+  .promo.a{background:linear-gradient(135deg,#ff8a3c,#e0641a)}.promo.b{background:linear-gradient(135deg,var(--green),var(--green-2))}.promo.c{background:linear-gradient(135deg,#e6c85a,#b8942a)}
+  .promo .em{font-size:1.8rem}.promo h3{font-size:1.15rem;margin:8px 0 2px}.promo p{font-size:.86rem;opacity:.85;font-weight:600}
+  /* sections */
+  section{padding:64px 0}
+  .head{text-align:center;max-width:600px;margin:0 auto 40px}
+  .tag{color:var(--orange);font-weight:700;letter-spacing:2px;text-transform:uppercase;font-size:.76rem}
+  .head h2{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:900;margin:10px 0 6px}
+  .head p{color:var(--muted)}
+  /* menu */
+  .mcats{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-bottom:32px;position:sticky;top:64px;background:rgba(8,10,7,.9);backdrop-filter:blur(6px);padding:12px 0;z-index:20}
+  .mcat{background:var(--bg-2);border:1px solid var(--border-lit);color:var(--muted);font-family:var(--font);font-weight:700;font-size:.88rem;padding:9px 18px;border-radius:50px;cursor:pointer}
+  .mcat.on{background:var(--orange);color:#0a0a0a;border-color:var(--orange)}
+  .cat-block{margin-bottom:38px}
+  .cat-title{font-size:1.3rem;font-weight:900;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+  .dishes{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .dish{display:flex;gap:15px;background:var(--bg-2);border:1px solid var(--border);border-radius:16px;padding:16px;transition:.2s}
+  .dish:hover{border-color:var(--orange)}
+  .dish .img{width:74px;height:74px;border-radius:12px;background:var(--bg-3);display:grid;place-items:center;font-size:2.1rem;flex:none}
+  .dish .info{flex:1;min-width:0}
+  .dish .nm{font-weight:800;font-size:1rem}.dish .tagd{display:inline-block;background:rgba(255,138,60,.15);color:var(--orange);font-size:.68rem;font-weight:800;padding:2px 8px;border-radius:50px;margin-left:6px}
+  .dish .ds{color:var(--muted);font-size:.84rem;margin:3px 0 8px}
+  .dish .btm{display:flex;justify-content:space-between;align-items:center}
+  .dish .pr{color:var(--green);font-weight:900;font-size:1.05rem}
+  .add{background:var(--green);color:#0a0a0a;border:none;width:36px;height:36px;border-radius:10px;font-size:1.3rem;font-weight:800;cursor:pointer}.add:hover{background:var(--green-2)}
+  /* nosotros */
+  .about{display:grid;grid-template-columns:1fr 1fr;gap:34px;align-items:center}
+  .about .ph{aspect-ratio:4/3;border-radius:18px;background:linear-gradient(135deg,#2a1a10,#0f130c);border:1px solid var(--border-lit);display:grid;place-items:center;font-size:4rem}
+  .about h2{font-size:2rem;font-weight:900;margin-bottom:12px}.about p{color:var(--muted);margin-bottom:12px}
+  .abstats{display:flex;gap:28px;margin-top:16px}.abstats .n{font-size:1.7rem;font-weight:900;color:var(--orange)}.abstats .l{color:var(--muted);font-size:.82rem}
+  /* info */
+  .info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .ic{background:var(--bg-2);border:1px solid var(--border);border-radius:16px;padding:24px;text-align:center}
+  .ic .em{font-size:1.8rem}.ic h4{margin:10px 0 4px;font-weight:800}.ic p{color:var(--muted);font-size:.88rem}
+  /* footer */
+  footer{border-top:1px solid var(--border);background:var(--bg-2);padding:40px 0 34px}
+  .foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px;color:var(--muted);font-size:.9rem}
+  .foot .brand{font-size:1.15rem;margin-bottom:8px}
+  .fbot{text-align:center;font-size:.82rem;margin-top:24px;padding-top:20px;border-top:1px solid var(--border);color:var(--muted)}
+  /* cart bar */
+  .cartbar{position:fixed;bottom:0;left:0;right:0;background:var(--bg-2);border-top:1px solid var(--border-lit);padding:14px clamp(16px,4vw,26px);display:flex;justify-content:space-between;align-items:center;gap:14px;z-index:60;transform:translateY(120%);transition:.3s}
+  .cartbar.show{transform:none}
+  .cartbar .info b{display:block;font-size:1.2rem}.cartbar .info span{color:var(--muted);font-size:.84rem}
+  .order{background:var(--green);color:#0a0a0a;border:none;font-family:var(--font);font-weight:800;font-size:.98rem;padding:13px 22px;border-radius:11px;cursor:pointer;display:inline-flex;align-items:center;gap:9px}.order:hover{background:var(--green-2)}
+  .order svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2}
+  @media(max-width:820px){
+    .promos,.info-grid{grid-template-columns:1fr}
+    .dishes{grid-template-columns:1fr}
+    .about{grid-template-columns:1fr}
+    .burger{display:flex}
+    .nav-links{display:none;position:absolute;top:64px;left:0;right:0;flex-direction:column;align-items:stretch;gap:2px;background:var(--bg-2);border-bottom:1px solid var(--border-lit);padding:12px 18px 16px}
+    .nav-links.open{display:flex}
+    .nav-links a{padding:12px 10px;border-radius:9px}
+    .nav-links a.btn{margin:8px 0 0!important;justify-content:center}
+  }
+  @media(max-width:540px){.hero{padding:56px 16px}.promos{margin-top:-18px}.abstats{gap:20px}.foot{flex-direction:column;gap:18px}}
+</style>
+<script>if(window.self!==window.top)document.write('<style>.demo-bar{display:none!important}</style>')</script>
+</head>
+<body>
+  <div class="demo-bar">Plantilla profesional de demostración — PintoCode · <a href="../index.html">Volver al sitio</a></div>
+  <header><div class="wrap nav">
+    <div class="brand">🍔 SaborExpress</div>
+    <nav class="nav-links" onclick="if(event.target.tagName==='A')this.classList.remove('open')"><a href="#menu">Menú</a><a href="#nosotros">Nosotros</a><a href="#info">Horarios</a><a href="#menu" class="btn" style="margin-left:8px">Pedir ahora</a></nav>
+    <button class="burger" onclick="document.querySelector('.nav-links').classList.toggle('open')"><span></span><span></span><span></span></button>
+  </div></header>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="wrap">
+      <div class="badge">🔥 Delivery en 30 min · pedidos por WhatsApp</div>
+      <h1>Las mejores <span class="o">hamburguesas</span><br>de la ciudad</h1>
+      <p>Ingredientes frescos, porciones generosas y entrega rápida a tu puerta. Arma tu pedido y confírmalo por WhatsApp.</p>
+      <div class="hero-cta"><a href="#menu" class="btn">Ver el menú</a></div>
+      <div class="feats"><span>🚚 <b>Delivery</b> en 30 min</span><span>⭐ <b>4.8</b> en reseñas</span><span>💳 <b>Todos</b> los medios de pago</span></div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="promos">
+      <div class="promo a"><div class="em">🍔</div><h3>2x1 en Clásicas</h3><p>Todos los martes</p></div>
+      <div class="promo b"><div class="em">🎉</div><h3>Combo familiar</h3><p>4 burgers + papas · $19.900</p></div>
+      <div class="promo c"><div class="em">🚀</div><h3>Envío gratis</h3><p>En pedidos sobre $15.000</p></div>
+    </div>
+  </div>
+
+  <!-- MENU -->
+  <section id="menu"><div class="wrap">
+    <div class="head"><span class="tag">Nuestro menú</span><h2>Elige tus favoritos</h2><p>Toca + para agregar al pedido</p></div>
+    <div class="mcats"><button class="mcat on" onclick="jump('c-burgers',this)">🍔 Hamburguesas</button><button class="mcat" onclick="jump('c-acomp',this)">🍟 Acompañamientos</button><button class="mcat" onclick="jump('c-beb',this)">🥤 Bebidas</button><button class="mcat" onclick="jump('c-post',this)">🍰 Postres</button></div>
+
+    <div class="cat-block" id="c-burgers"><div class="cat-title">🍔 Hamburguesas</div><div class="dishes">
+      <div class="dish"><div class="img">🍔</div><div class="info"><div class="nm">Clásica <span class="tagd">POPULAR</span></div><div class="ds">Carne, queso, lechuga, tomate y salsa de la casa</div><div class="btm"><span class="pr">$5.500</span><button class="add" onclick="add('Clásica',5500)">+</button></div></div></div>
+      <div class="dish"><div class="img">🧀</div><div class="info"><div class="nm">Doble queso</div><div class="ds">Doble carne, doble cheddar y cebolla caramelizada</div><div class="btm"><span class="pr">$7.900</span><button class="add" onclick="add('Doble queso',7900)">+</button></div></div></div>
+      <div class="dish"><div class="img">🥓</div><div class="info"><div class="nm">BBQ Bacon</div><div class="ds">Carne, tocino crocante, cebolla y salsa BBQ</div><div class="btm"><span class="pr">$7.500</span><button class="add" onclick="add('BBQ Bacon',7500)">+</button></div></div></div>
+      <div class="dish"><div class="img">🌱</div><div class="info"><div class="nm">Veggie</div><div class="ds">Medallón de garbanzo, palta, rúcula y tomate</div><div class="btm"><span class="pr">$6.500</span><button class="add" onclick="add('Veggie',6500)">+</button></div></div></div>
+    </div></div>
+
+    <div class="cat-block" id="c-acomp"><div class="cat-title">🍟 Acompañamientos</div><div class="dishes">
+      <div class="dish"><div class="img">🍟</div><div class="info"><div class="nm">Papas fritas</div><div class="ds">Porción grande con sal de mar</div><div class="btm"><span class="pr">$2.900</span><button class="add" onclick="add('Papas fritas',2900)">+</button></div></div></div>
+      <div class="dish"><div class="img">🧅</div><div class="info"><div class="nm">Aros de cebolla</div><div class="ds">6 unidades apanadas</div><div class="btm"><span class="pr">$3.200</span><button class="add" onclick="add('Aros de cebolla',3200)">+</button></div></div></div>
+    </div></div>
+
+    <div class="cat-block" id="c-beb"><div class="cat-title">🥤 Bebidas</div><div class="dishes">
+      <div class="dish"><div class="img">🥤</div><div class="info"><div class="nm">Bebida 350ml</div><div class="ds">Línea Coca-Cola</div><div class="btm"><span class="pr">$1.500</span><button class="add" onclick="add('Bebida',1500)">+</button></div></div></div>
+      <div class="dish"><div class="img">🧃</div><div class="info"><div class="nm">Jugo natural</div><div class="ds">Naranja o frutilla</div><div class="btm"><span class="pr">$2.200</span><button class="add" onclick="add('Jugo natural',2200)">+</button></div></div></div>
+    </div></div>
+
+    <div class="cat-block" id="c-post"><div class="cat-title">🍰 Postres</div><div class="dishes">
+      <div class="dish"><div class="img">🍦</div><div class="info"><div class="nm">Helado artesanal</div><div class="ds">Vainilla, chocolate o frutilla</div><div class="btm"><span class="pr">$2.500</span><button class="add" onclick="add('Helado',2500)">+</button></div></div></div>
+      <div class="dish"><div class="img">🍪</div><div class="info"><div class="nm">Brownie</div><div class="ds">Con nueces y salsa de chocolate</div><div class="btm"><span class="pr">$2.900</span><button class="add" onclick="add('Brownie',2900)">+</button></div></div></div>
+    </div></div>
+  </div></section>
+
+  <!-- NOSOTROS -->
+  <section id="nosotros" style="background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)"><div class="wrap">
+    <div class="about">
+      <div class="ph">👨‍🍳</div>
+      <div>
+        <span class="tag">Nosotros</span>
+        <h2>Sabor casero, hecho al momento</h2>
+        <p>Desde 2019 preparamos hamburguesas con carne 100% de vacuno, pan artesanal horneado cada día y salsas de receta propia.</p>
+        <p>Cada pedido se prepara al instante para que llegue caliente y fresco a tu mesa.</p>
+        <div class="abstats"><div><div class="n">+15.000</div><div class="l">Pedidos entregados</div></div><div><div class="n">4.8★</div><div class="l">Calificación</div></div><div><div class="n">30min</div><div class="l">Entrega promedio</div></div></div>
+      </div>
+    </div>
+  </div></section>
+
+  <!-- INFO -->
+  <section id="info"><div class="wrap">
+    <div class="head"><span class="tag">Info útil</span><h2>Horarios y cobertura</h2></div>
+    <div class="info-grid">
+      <div class="ic"><div class="em">🕐</div><h4>Horario</h4><p>Lun–Dom<br>12:00 – 23:00</p></div>
+      <div class="ic"><div class="em">📍</div><h4>Ubicación</h4><p>Av. Principal 1234<br>Ovalle</p></div>
+      <div class="ic"><div class="em">🚚</div><h4>Delivery</h4><p>Gratis sobre $15.000<br>Radio 5 km</p></div>
+    </div>
+  </div></section>
+
+  <footer><div class="wrap">
+    <div class="foot">
+      <div><div class="brand">🍔 SaborExpress</div>Las mejores hamburguesas de la ciudad.</div>
+      <div><b style="color:var(--text)">Contacto</b><br>+56 9 9334 7289<br>Av. Principal 1234, Ovalle</div>
+      <div><b style="color:var(--text)">Horario</b><br>Lun–Dom 12:00–23:00</div>
+    </div>
+    <div class="fbot">© 2026 SaborExpress · Plantilla por PintoCode</div>
+  </div></footer>
+
+  <div class="cartbar" id="cartbar">
+    <div class="info"><b id="total">$0</b><span id="count">0 productos</span></div>
+    <button class="order" onclick="order()"><svg viewBox="0 0 24 24"><path d="M21 11.5a8 8 0 01-11.9 7L3 20.5l2.1-6A8 8 0 1121 11.5z"/></svg> Pedir por WhatsApp</button>
+  </div>
+<script>
+  const cart={};let total=0;
+  function add(n,p){cart[n]=cart[n]||{p,q:0};cart[n].q++;total+=p;render()}
+  function render(){const items=Object.entries(cart);const q=items.reduce((s,[,v])=>s+v.q,0);
+    document.getElementById('count').textContent=q+(q===1?' producto':' productos');
+    document.getElementById('total').textContent='$'+total.toLocaleString('es-CL');
+    document.getElementById('cartbar').classList.toggle('show',q>0);}
+  function order(){let msg='Hola SaborExpress, quiero pedir:%0A';for(const[n,v]of Object.entries(cart))msg+=`- ${v.q}x ${n}%0A`;msg+=`Total: $${total.toLocaleString('es-CL')}`;window.open('https://wa.me/56993347289?text='+msg,'_blank')}
+  function jump(id,el){document.querySelectorAll('.mcat').forEach(m=>m.classList.remove('on'));el.classList.add('on');const y=document.getElementById(id).getBoundingClientRect().top+window.scrollY-130;window.scrollTo({top:y,behavior:'smooth'})}
+</script>
+</body>
+</html>
