@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /$
+Allow: /index.html
+Disallow: /plantillas/
+
+Sitemap: https://pintocode.cl/sitemap.xml
