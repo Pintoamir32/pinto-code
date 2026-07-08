@@ -3,45 +3,106 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>PintoCode — Páginas web y apps a tu medida | Chile</title>
-<meta name="description" content="PintoCode crea páginas web y aplicaciones profesionales para tu negocio: inventario, punto de venta, reservas, delivery y CRM. Rápido, moderno y a precio accesible en Chile." />
+<title>Desarrollo de páginas web y apps en Chile | PintoCode</title>
+<meta name="description" content="Desarrollo páginas web, apps y sistemas a medida para negocios en Chile: inventario, punto de venta, reservas, delivery y CRM. Cotiza gratis." />
 <link rel="canonical" href="https://pintocode.cl/" />
-<meta name="robots" content="index, follow, max-image-preview:large" />
+<link rel="alternate" hreflang="es-CL" href="https://pintocode.cl/" />
+<link rel="alternate" hreflang="x-default" href="https://pintocode.cl/" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 <meta name="author" content="PintoCode" />
 <meta name="theme-color" content="#7ec73c" />
-<link rel="icon" href="logo.png" />
-<link rel="apple-touch-icon" href="logo.png" />
+<meta name="format-detection" content="telephone=no" />
+<link rel="icon" type="image/png" href="/logo.png" />
+<link rel="apple-touch-icon" href="/logo.png" />
 
 <!-- Open Graph (WhatsApp / Facebook / LinkedIn) -->
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="PintoCode" />
 <meta property="og:locale" content="es_CL" />
-<meta property="og:title" content="PintoCode — Páginas web y apps a tu medida" />
-<meta property="og:description" content="Creamos páginas web y aplicaciones profesionales para tu negocio: inventario, ventas, reservas, delivery y CRM. Rápido, moderno y a precio accesible." />
+<meta property="og:title" content="Desarrollo de páginas web y apps en Chile | PintoCode" />
+<meta property="og:description" content="Páginas web, apps y sistemas a medida para negocios en Chile. Cotiza tu proyecto gratis." />
 <meta property="og:url" content="https://pintocode.cl/" />
 <meta property="og:image" content="https://pintocode.cl/logo.png" />
+<meta property="og:image:secure_url" content="https://pintocode.cl/logo.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1254" />
+<meta property="og:image:height" content="1254" />
 <meta property="og:image:alt" content="Logo de PintoCode" />
 
 <!-- Twitter Card -->
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="PintoCode — Páginas web y apps a tu medida" />
-<meta name="twitter:description" content="Creamos páginas web y aplicaciones profesionales para tu negocio: inventario, ventas, reservas, delivery y CRM." />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Desarrollo de páginas web y apps en Chile | PintoCode" />
+<meta name="twitter:description" content="Páginas web, apps y sistemas a medida para negocios en Chile. Cotiza tu proyecto gratis." />
 <meta name="twitter:image" content="https://pintocode.cl/logo.png" />
+<meta name="twitter:image:alt" content="Logo de PintoCode" />
 
-<!-- Datos estructurados: negocio + sitio web -->
+<!-- Datos estructurados: marca, sitio, negocio y servicios -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  "name": "PintoCode",
-  "description": "Desarrollo de páginas web y aplicaciones a medida para negocios: inventario, punto de venta, reservas, delivery y CRM.",
-  "url": "https://pintocode.cl/",
-  "logo": "https://pintocode.cl/logo.png",
-  "image": "https://pintocode.cl/logo.png",
-  "areaServed": "CL",
-  "serviceType": ["Desarrollo web", "Desarrollo de aplicaciones", "Sistemas para negocios"],
-  "founder": { "@type": "Person", "name": "Amir Pinto Marín" },
-  "address": { "@type": "PostalAddress", "addressLocality": "Ovalle", "addressRegion": "Coquimbo", "addressCountry": "CL" }
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://pintocode.cl/#website",
+      "url": "https://pintocode.cl/",
+      "name": "PintoCode",
+      "description": "Desarrollo de páginas web, aplicaciones y sistemas a medida para negocios en Chile.",
+      "inLanguage": "es-CL",
+      "publisher": { "@id": "https://pintocode.cl/#business" }
+    },
+    {
+      "@type": ["ProfessionalService", "Organization"],
+      "@id": "https://pintocode.cl/#business",
+      "name": "PintoCode",
+      "url": "https://pintocode.cl/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://pintocode.cl/logo.png",
+        "width": 1254,
+        "height": 1254
+      },
+      "image": "https://pintocode.cl/logo.png",
+      "description": "Desarrollo de páginas web, aplicaciones y sistemas a medida para negocios en Chile.",
+      "email": "mailto:amir.pinto.m@gmail.com",
+      "telephone": "+56 9 9334 7289",
+      "founder": { "@type": "Person", "name": "Amir Pinto Marín" },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Ovalle",
+        "addressRegion": "Coquimbo",
+        "addressCountry": "CL"
+      },
+      "areaServed": { "@type": "Country", "name": "Chile" },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+56 9 9334 7289",
+        "email": "amir.pinto.m@gmail.com",
+        "contactType": "sales",
+        "areaServed": "CL",
+        "availableLanguage": "Spanish"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Servicios de desarrollo digital",
+        "itemListElement": [
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Desarrollo de páginas web" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Desarrollo de aplicaciones web" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Sistemas de inventario y punto de venta" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Sistemas de reservas, delivery y CRM" } }
+        ]
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://pintocode.cl/#webpage",
+      "url": "https://pintocode.cl/",
+      "name": "Desarrollo de páginas web y apps en Chile | PintoCode",
+      "description": "Páginas web, apps y sistemas a medida para negocios en Chile.",
+      "isPartOf": { "@id": "https://pintocode.cl/#website" },
+      "about": { "@id": "https://pintocode.cl/#business" },
+      "inLanguage": "es-CL"
+    }
+  ]
 }
 </script>
 
