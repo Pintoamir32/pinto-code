@@ -143,7 +143,7 @@
   .burger span{width:26px;height:2px;background:var(--text);transition:.3s}
 
   /* ---------- HERO ---------- */
-  .hero{padding-top:150px;padding-bottom:90px;display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+  .hero{max-width:none;width:100%;padding-top:120px;padding-bottom:64px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:56px;align-items:center}
   .pill{display:inline-flex;align-items:center;gap:8px;padding:7px 16px;border:1px solid var(--border-lit);border-radius:50px;font-size:.82rem;color:var(--green);font-weight:600;margin-bottom:26px}
   .pill .dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:blink 1.6s infinite}
   @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
@@ -452,7 +452,7 @@
   }
 
   @media(max-width:900px){
-    .hero{grid-template-columns:1fr;gap:40px}
+    .hero{grid-template-columns:1fr;gap:34px}
     .why{grid-template-columns:1fr;gap:36px}
     .bento,.prices,.quotes,.works{grid-template-columns:1fr}
     .tech{grid-template-columns:repeat(2,1fr)}
@@ -467,7 +467,7 @@
     .nav{height:64px}
     .brand{font-size:1.2rem}
     .nav-links{width:84%}
-    .hero{padding-top:110px;padding-bottom:60px;gap:34px}
+    .hero{padding-top:88px;padding-bottom:42px;gap:28px}
     .hero .lead{font-size:1.05rem}
     .hero-cta{gap:10px}
     .hero-cta .btn{flex:1 1 100%;justify-content:center}
